@@ -1,0 +1,25 @@
+apiVersion: apps/v1 # 1.19
+kind: Deployment
+metadata:
+  name: spring-boot
+spec:
+  selector:
+    matchLabels:
+      app: spring
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: spring
+    spec:
+      containers:
+        - name: spring
+          image: kubernetes-springboot-demo:0.0.1
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 30

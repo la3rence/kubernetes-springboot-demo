@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-boot-svc
+  labels:
+    app: spring
+spec:
+  selector:
+    app: spring
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30080
