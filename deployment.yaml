@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: spring
-          image: kubernetes-springboot-demo:0.0.1
+          image: registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:latest
           ports:
             - containerPort: 8080
           livenessProbe:

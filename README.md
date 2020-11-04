@@ -1,20 +1,24 @@
 # 基于 Kubernetes 编排的 Spring Boot 应用
 
 ## 环境准备
-- Maven 3
-- JDK 8
 - Docker 19
 - Kubernetes 1.19
 
-## 部署步骤
+## 本地可选步骤
 
-编译并构建 Docker 镜像：
+编译并构建 Docker 镜像，需要环境：
+- Maven 3
+- JDK 8
+
 ```shell script
 mvn clean package
 mvn dockerfile:build
+docker tag kubernetes-springboot-demo:0.0.1 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:latest    
 ```
 
-创建 Deployment：
+## 部署
+
+创建 Deployment。 若本地无镜像则自动从仓库在线拉取：
 ```shell script
 kubectl apply -f deployment.yaml
 ```
