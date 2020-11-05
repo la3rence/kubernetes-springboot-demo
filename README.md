@@ -11,7 +11,7 @@
 - JDK 8
 
 ```shell script
-mvn clean package -DskipTests=true 
+mvn clean package
 mvn dockerfile:build
 docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2   
 ```
