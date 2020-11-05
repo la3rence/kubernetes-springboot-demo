@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: spring
-  replicas: 2 # tells deployment to run 2 pods matching the template
+  replicas: 1
   template:
     metadata:
       labels:
@@ -14,9 +14,14 @@ spec:
     spec:
       containers:
         - name: spring
-          image: registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:latest
+          image: registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2
           ports:
             - containerPort: 8080
+          env:
+            - name: REDIS_HOST
+              value: redis-svc.default.svc.cluster.local
+            - name: REDIS_PORT
+              value: '6379'
           livenessProbe:
             httpGet:
               path: /actuator/health

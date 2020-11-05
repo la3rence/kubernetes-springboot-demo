@@ -10,7 +10,7 @@
     </parent>
     <groupId>me.lawrenceli</groupId>
     <artifactId>kubernetes-springboot-demo</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>kubernetes-springboot-demo</name>
     <description>Demo project for Spring Boot (K8s)</description>
 
@@ -27,7 +27,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -42,6 +45,16 @@
     </dependencies>
 
     <build>
+        <resources>
+            <!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
@@ -68,5 +81,6 @@
                 </configuration>
             </plugin>
         </plugins>
+
     </build>
 </project>
