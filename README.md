@@ -50,7 +50,24 @@ kubectl apply -f spring-service.yaml
 kubectl get svc
 ```
 
-伸缩 Spring Boot 副本数量，Service 会自动反向代理以实现负载均衡：
+伸缩 Spring Boot 副本数量(手动)，Service 会自动反向代理以实现负载均衡：
 ```shell script
 kubectl scale deployments/spring-boot --replicas=3  
 ```
+
+## 水平自动弹性伸缩
+
+首先确保 Kubernetes 集群中部署了 Metrics Server 来获取 CPU 指标等度量。
+你可以使用 `kubectl top pod` 来验证成功与否。
+
+Kubernetes 根据 Deployment 定义的 Resource Limit 来发起 Auto Scale, 执行：
+```shell script
+kubectl autoscale deployment spring-boot --cpu-percent=50 --min=1 --max=5
+```
+
+或者
+```
+kubectl apply -f hpa.yaml
+```
+
+观察此时 Pod 的数量变化。
