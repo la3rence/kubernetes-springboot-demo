@@ -22,6 +22,8 @@ spec:
               value: redis-svc.default.svc.cluster.local
             - name: REDIS_PORT
               value: '6379'
+            - name: JAVA_OPTS
+              value: '-XX:+UseG1GC'
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -30,5 +32,5 @@ spec:
             periodSeconds: 30
           resources:
             requests:
-              memory: 256Mi
-              cpu: 20m
+              memory: 512Mi
+              cpu: 50m
