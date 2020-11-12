@@ -19,7 +19,7 @@ spec:
             - containerPort: 8080
           env:
             - name: REDIS_HOST
-              value: redis-svc.default.svc.cluster.local
+              value: redis-external-svc.default.svc.cluster.local # 引入集群外的服务
             - name: REDIS_PORT
               value: '6379'
             - name: JAVA_OPTS

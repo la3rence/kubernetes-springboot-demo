@@ -1,12 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis-svc
-  labels:
-    app: redis-app
+  name: redis-external-svc
 spec:
-  selector:
-    app: redis-app
-  type: ClusterIP
-  ports:
-    - port: 6379
+  type: ExternalName
+  externalName: redis.lawrenceli.me # 写集群内部机器上的 HOST 或者写集群可访问的域名
