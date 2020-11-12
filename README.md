@@ -1,4 +1,4 @@
-# 基于 Kubernetes 编排的 Spring Boot (Redis) 应用
+# 基于 Kubernetes 编排的 Spring Boot (集群外 Redis) 应用
 
 ## 环境准备
 - Docker 19
@@ -20,17 +20,7 @@ docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/do
 
 ## 直接部署
 
-创建 Redis 服务的 Deployment。 若本地无镜像则自动从仓库在线拉取：
-```shell script
-kubectl apply -f redis-deployment.yaml
-```
-
-查看 Pod 状态：
-```shell script
-kubectl get pods                                                                                                                                                                          
-```
-
-创建 Service，仅在集群内部暴露 Redis 服务：
+创建 Service，引用来自集群外的 Redis 服务：
 ```shell script
 kubectl apply -f redis-service.yaml
 ```
