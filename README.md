@@ -48,7 +48,7 @@ kubectl scale deployments/spring-boot --replicas=3
 ## 水平自动弹性伸缩
 
 首先确保 Kubernetes 集群中部署了 Metrics Server 来获取 CPU 指标等度量。
-你可以使用 `kubectl top pod` 来验证成功与否。
+你可以使用 `kubectl top node` 来验证成功与否。
 
 Kubernetes 根据 Deployment 定义的 Resource Limit 来发起 Auto Scale, 执行：
 ```shell script
