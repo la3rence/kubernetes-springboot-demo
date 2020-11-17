@@ -4,6 +4,14 @@
 - Docker 19
 - Kubernetes 1.19
 
+本分支使用 Ingress 对外暴露，所以得先在集群中部署 Ingress 控制器。
+本例尝试使用 Nginx Ingress Controller 作为控制器，可以把它当作一个[七层负载均衡器](https://lawrenceli.me/blog/load-balancing):
+```shell script
+kubectl apply -f ingress.yaml
+```
+
+安装完成后尝试在 Pod 所在节点请求 `curl 127.0.0.1` ，应当返回 404 的 HTML 来验证.
+
 ## 本地可选步骤
 
 如果要在本地编译并构建 Spring Boot Docker 镜像，需要环境：
@@ -16,7 +24,7 @@ mvn dockerfile:build
 docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2   
 ```
 
-上述步骤可直接跳过。
+上述步骤可直接跳过.
 
 ## 直接部署
 
@@ -40,7 +48,7 @@ kubectl apply -f redis-service.yaml
 kubectl apply -f spring-deployment.yaml
 ```
 
-创建 Spring Boot 的 Service。且对外暴露 HTTP 服务：
+创建 Spring Boot 的 Service（集群内）, 并创建 Ingress 来暴露：
 ```shell script
 kubectl apply -f spring-service.yaml
 ```
@@ -50,24 +58,12 @@ kubectl apply -f spring-service.yaml
 kubectl get svc
 ```
 
-伸缩 Spring Boot 副本数量(手动)，Service 会自动反向代理以实现负载均衡：
+查看 Ingress:
 ```shell script
-kubectl scale deployments/spring-boot --replicas=3  
+kubectl get ingress
 ```
 
-## 水平自动弹性伸缩
-
-首先确保 Kubernetes 集群中部署了 Metrics Server 来获取 CPU 指标等度量。
-你可以使用 `kubectl top pod` 来验证成功与否。
-
-Kubernetes 根据 Deployment 定义的 Resource Limit 来发起 Auto Scale, 执行：
+写 Hosts，或者在域名服务商做 DNS 解析后，尝试访问服务：
 ```shell script
-kubectl autoscale deployment spring-boot --cpu-percent=50 --min=1 --max=5
+curl spring.k8s.me/hello
 ```
-
-或者
-```
-kubectl apply -f hpa.yaml
-```
-
-观察此时 Pod 的数量变化。

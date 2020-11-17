@@ -18,6 +18,8 @@ spec:
           image: registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2
           ports:
             - containerPort: 8080
+              name: spring-rest
+              protocol: TCP
           env:
             - name: REDIS_HOST
               value: redis-svc.default.svc.cluster.local

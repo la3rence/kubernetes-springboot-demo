@@ -8,7 +8,21 @@ metadata:
 spec:
   selector:
     app: spring
-  type: NodePort
   ports:
-    - port: 8080
-      nodePort: 30080
+    - name: spring-rest
+      port: 8080
+      targetPort: spring-rest
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: spring-boot-ingress
+  namespace: default
+spec:
+  rules:
+    - host: spring.k8s.me # 本地要测试域名可以写 Hosts
+      http:
+        paths:
+          - backend:
+              serviceName: spring-boot-svc
+              servicePort: spring-rest
