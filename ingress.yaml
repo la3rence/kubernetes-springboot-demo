@@ -217,6 +217,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: master-node # 注意改为 master hostname
       serviceAccountName: nginx-ingress-serviceaccount
+      hostNetwork: true # 使用节点的 host 网络方式
       containers:
         - name: nginx-ingress-controller
           image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1
@@ -247,10 +248,8 @@ spec:
                   fieldPath: metadata.namespace
           ports:
             - name: http
-              hostPort: 80 # 使用节点的 hostPort 方式
               containerPort: 80
             - name: https
-              hostPort: 443
               containerPort: 443
           livenessProbe:
             failureThreshold: 3
