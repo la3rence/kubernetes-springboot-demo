@@ -31,9 +31,13 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
             periodSeconds: 30
           resources:
             requests:
               memory: 512Mi
               cpu: 50m
+          lifecycle:
+            preStop: # https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#cloud-deployment-kubernetes
+              exec:
+                command: [ "sh", "-c", "sleep 15" ]
