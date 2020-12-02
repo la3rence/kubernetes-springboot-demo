@@ -8,6 +8,7 @@ class KubernetesSpringbootDemoApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println("Prow");
     }
 
 }
