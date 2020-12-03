@@ -37,7 +37,7 @@ tide:
                   - "required_test"
                 optional-contexts:
                   - "optional_test"
-
+#             args: [ "-c", "mkdir -p /${REPO_NAME}; cd /${REPO_NAME}; git init; git remote add origin https://github.com/${REPO_OWNER}/${REPO_NAME}.git; git fetch origin pull/${PULL_NUMBER}/head:pr-${PULL_NUMBER}; git checkout pr-${PULL_NUMBER}; pwd; mvn test " ]
 presubmits:
   Lonor/kubernetes-springboot-demo:
     - name: spring
@@ -46,8 +46,18 @@ presubmits:
       spec:
         containers:
           - image: maven:3.6-jdk-8
-            command: [ "/bin/sh" ]
-            args: [ "-c", "mkdir -p /${REPO_NAME}; cd /${REPO_NAME}; git init; git remote add origin https://github.com/${REPO_OWNER}/${REPO_NAME}.git; git fetch origin pull/${PULL_NUMBER}/head:pr-${PULL_NUMBER}; git checkout pr-${PULL_NUMBER}; pwd; mvn test " ]
+            command: [ "/bin/sh", "-c" ]
+            args:
+              - |
+                mkdir -p /root/.m2
+                curl -L https://gitee.com/lawrence2019/codes/rh8wo4g217au36lzyx0km20/raw\?blob_name\=settings.xml -o /root/.m2/settings.xml
+                mkdir -p /${REPO_NAME}
+                cd /${REPO_NAME}
+                git init
+                git remote add origin https://github.com/${REPO_OWNER}/${REPO_NAME}.git
+                git fetch origin pull/${PULL_NUMBER}/head:pr-${PULL_NUMBER}
+                git checkout pr-${PULL_NUMBER}
+                mvn test
             resources:
               requests:
                 cpu: "2000m"
