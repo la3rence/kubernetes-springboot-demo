@@ -42,7 +42,7 @@ presubmits:
   Lonor/kubernetes-springboot-demo:
     - name: spring
       decorate: false
-      always_run: true
+      always_run: false
       spec:
         containers:
           - image: maven:3.6-jdk-8
