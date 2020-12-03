@@ -1,0 +1,24 @@
+plugins:
+  Lonor/kubernetes-springboot-demo:
+    - size
+    - cat
+    - dog
+    - pony
+    - shrug
+    - yuks
+    - label
+    - trigger
+    - approve
+    - lgtm
+    - welcome
+    - help
+    - assign
+    - branchcleaner
+    - lifecycle
+    - wip
+    - heart
+    - milestone
+    - project
+    - stage
+    - skip
+    - blockade
