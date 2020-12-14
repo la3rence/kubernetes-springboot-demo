@@ -10,7 +10,7 @@
     </parent>
     <groupId>me.lawrenceli</groupId>
     <artifactId>kubernetes-springboot-demo</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>kubernetes-springboot-demo</name>
     <description>Demo project for Spring Boot (K8s)</description>
 

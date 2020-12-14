@@ -18,6 +18,9 @@ public class HelloController {
     @Value("${spring.redis.host}")
     private String redisHost;
 
+    @Value("${version}")
+    private String verison;
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -34,6 +37,12 @@ public class HelloController {
         logger.info("hello method...");
         // 尝试发出 HTTP 请求，测试 Pod 是否可以访问外网：
         return restTemplate.getForObject("https://lawrenceli.me/", String.class);
+    }
+
+    @GetMapping("/v")
+    public String v() {
+        logger.info("version: [{}]", verison);
+        return verison;
     }
 
     @GetMapping("/redis")
