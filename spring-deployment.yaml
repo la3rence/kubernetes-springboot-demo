@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: spring
-          image: registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2
+          image: registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring-ingress:0.0.2
           ports:
             - containerPort: 8080
               name: spring-rest

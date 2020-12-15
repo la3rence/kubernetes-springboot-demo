@@ -21,7 +21,7 @@ kubectl apply -f ingress.yaml
 ```shell script
 mvn clean package
 mvn dockerfile:build
-docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2   
+docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring-ingress:0.0.2   
 ```
 
 上述步骤可直接跳过.
@@ -67,3 +67,28 @@ kubectl get ingress
 ```shell script
 curl spring.k8s.me/hello
 ```
+
+## 滚动更新
+
+参考官方指南[执行滚动更新](https://kubernetes.io/zh/docs/tutorials/kubernetes-basics/update/update-interactive/)。
+将当前版本号首先定义成 0.0.2，由 `/v` 接口输出当前版本。观察此接口的返回。然后开启一个定时任务，不断循环请求此接口，并开始滚动更新：
+
+```shell
+kubectl set image deployments/spring-boot spring=registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring-ingress:0.0.3
+kubectl get pod
+```
+
+此刻，Kubernetes 收到了信号，开始先运行新的 Pod 来启动，准备就绪后，可以发现 `/v` 接口已经返回了新的版本号，且中间不会出现停机造成的接口返回失败。
+新版本部署成功了，旧的 Pod 会自动关停自己。 这样就保证了服务的不间断升级。
+
+```shell
+kubectl rollout status deployment/spring-boot
+```
+
+## 回滚
+
+```shell
+kubectl rollout undo deployments/spring-boot
+```
+
+将旧版本 Deployments 恢复，滚动更新的逆过程。
