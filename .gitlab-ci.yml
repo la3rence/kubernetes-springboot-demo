@@ -19,10 +19,8 @@ stages:
 
 complie:
   stage: complie
-  image: maven:3.6.3-jdk-8
+  image: lawrence2018/aliyun-maven:3.6.3-openjdk-8-slim
   script:
-    - mkdir -p /root/.m2
-    - curl -L https://gitee.com/lawrence2019/codes/rh8wo4g217au36lzyx0km20/raw\?blob_name\=settings.xml -o /root/.m2/settings.xml
     - mvn -B clean package -Dmaven.test.skip=true
   artifacts:
     paths:
