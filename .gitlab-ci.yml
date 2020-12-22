@@ -1,4 +1,4 @@
-image: docker:19.03.12
+image: docker:19.03.14
 services:
   - name: docker:19.03.12-dind
     entrypoint: [ "env", "-u", "DOCKER_HOST" ]
