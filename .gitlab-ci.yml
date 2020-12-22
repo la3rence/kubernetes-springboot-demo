@@ -1,0 +1,50 @@
+image: docker:19.03.12
+services:
+  - name: docker:19.03.12-dind
+    entrypoint: [ "env", "-u", "DOCKER_HOST" ]
+    command: [ "dockerd-entrypoint.sh" ]
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+stages:
+  - complie
+  - build
+  - deploy
+
+complie:
+  stage: complie
+  image: maven:3.6.3-jdk-8
+  script:
+    - mkdir -p /root/.m2
+    - curl -L https://gitee.com/lawrence2019/codes/rh8wo4g217au36lzyx0km20/raw\?blob_name\=settings.xml -o /root/.m2/settings.xml
+    - mvn -B clean package -Dmaven.test.skip=true
+  artifacts:
+    paths:
+      - target/*.jar
+
+build:
+  stage: build
+  script:
+    - docker build --build-arg JAR_FILE=target/*.jar -t "${CI_REGISTRY}"/dockerhub2019/springboot-demo:1.0.0 .
+    - docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
+    - docker push "${CI_REGISTRY}"/dockerhub2019/springboot-demo:1.0.0
+
+deploy:
+  stage: deploy
+  image: ubuntu
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan test-host >> ~/.ssh/known_hosts
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh -t -t root@test-host "docker run -itd --name springboot-demo --net=host '${CI_REGISTRY}'/dockerhub2019/springboot-demo:1.0.0"
