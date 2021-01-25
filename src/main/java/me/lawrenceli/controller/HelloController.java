@@ -19,7 +19,7 @@ public class HelloController {
     private String redisHost;
 
     @Value("${version}")
-    private String verison;
+    private String version;
 
     @Bean
     public RestTemplate restTemplate() {
@@ -41,8 +41,8 @@ public class HelloController {
 
     @GetMapping("/v")
     public String v() {
-        logger.info("version: [{}]", verison);
-        return verison;
+        logger.info("version: [{}]", version);
+        return version;
     }
 
     @GetMapping("/redis")
