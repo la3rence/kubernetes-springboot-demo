@@ -1,15 +1,18 @@
 package me.lawrenceli.controller;
 
+import me.lawrenceli.KubernetesSpringbootDemoApplication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -17,20 +20,22 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = {KubernetesSpringbootDemoApplication.class})
 class HelloControllerTest {
 
     Logger log = LoggerFactory.getLogger(HelloControllerTest.class);
 
     private MockMvc mockMvc;
 
-    @MockBean
-    private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    HelloController helloController;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     @BeforeEach
     void setUp() {
-        log.debug("set up for redis host address ...");
-        HelloController helloController = new HelloController();
-        ReflectionTestUtils.setField(helloController, "redisHost", "127.0.0.1");
         log.debug("set up for mock mvc ...");
         mockMvc = MockMvcBuilders.standaloneSetup(helloController).build();
     }
@@ -58,11 +63,11 @@ class HelloControllerTest {
     void redis() throws Exception {
         log.debug("test redis server");
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/redis");
-        ResultActions resultActions = mockMvc.perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        ResultActions resultActions = mockMvc.perform(requestBuilder);
         String now = stringRedisTemplate.opsForValue().get("now");
         if (null != now) {
-            resultActions.andExpect(MockMvcResultMatchers.content().string(now));
+            resultActions.andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().string(now));
         } else {
             Assertions.fail();
         }
