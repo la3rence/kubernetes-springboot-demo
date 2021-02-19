@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/Lonor/kubernetes-springboot-demo/branch/master/graph/badge.svg?token=VMFJJQWK15)](https://codecov.io/gh/Lonor/kubernetes-springboot-demo)
+[![Maven Test](https://github.com/Lonor/kubernetes-springboot-demo/actions/workflows/ci.yaml/badge.svg)](https://github.com/Lonor/kubernetes-springboot-demo/actions/workflows/ci.yaml)
+
 # 基于 Kubernetes 编排的 Spring Boot (Redis) 应用
 
 ## 环境准备
