@@ -34,7 +34,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Set up Redis in Docker
-        run:|
+        run: |
           docker run -itd --name redis -p 6379:6379 redis:3.2.12
           docker ps -a
 
