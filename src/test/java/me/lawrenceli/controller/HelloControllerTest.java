@@ -3,13 +3,13 @@ package me.lawrenceli.controller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -28,8 +28,11 @@ class HelloControllerTest {
 
     @BeforeEach
     void setUp() {
-        log.debug("set up for mock mvc...");
-        mockMvc = MockMvcBuilders.standaloneSetup(new HelloController()).build();
+        log.debug("set up for redis host address ...");
+        HelloController helloController = new HelloController();
+        ReflectionTestUtils.setField(helloController, "redisHost", "127.0.0.1");
+        log.debug("set up for mock mvc ...");
+        mockMvc = MockMvcBuilders.standaloneSetup(helloController).build();
     }
 
     @AfterEach
