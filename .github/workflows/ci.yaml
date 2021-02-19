@@ -33,8 +33,10 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      # - name: Set up Redis in Docker
-      #   run: docker ps
+      - name: Set up Redis in Docker
+        run:|
+          docker run -itd --name redis -p 6379:6379 redis:3.2.12
+          docker ps -a
 
       - name: Test with Maven
         run: mvn -B clean test cobertura:cobertura
