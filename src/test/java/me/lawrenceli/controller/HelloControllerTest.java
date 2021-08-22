@@ -55,6 +55,13 @@ class HelloControllerTest {
     }
 
 
+    @Test
+    void config() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/config");
+        mockMvc.perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.content().string("v0"));
+    }
+
     /**
      * if redis server isn't provided, use @Disabled("not test: redis server required")
      */
