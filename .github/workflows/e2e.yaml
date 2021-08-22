@@ -39,9 +39,10 @@ jobs:
           minikube version: 'v1.16.0'
           kubernetes version: 'v1.19.3'
           github token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Interact with the cluster
+      - name: Interact with the single node cluster
         run: |
           kubectl version
+          sleep 20
           kubectl get nodes
           ls -lh|grep -i yaml
           kubectl apply -f redis-deployment.yaml
