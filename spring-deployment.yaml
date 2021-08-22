@@ -35,11 +35,11 @@ spec:
               path: /actuator/health
               port: 8080
             initialDelaySeconds: 5
-            periodSeconds: 30
+            periodSeconds: 20
           resources:
             requests:
               memory: 512Mi
-              cpu: 200m
+              cpu: 500m
           lifecycle:
             preStop: # https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#cloud-deployment-kubernetes
               exec:

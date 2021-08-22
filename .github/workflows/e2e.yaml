@@ -42,7 +42,7 @@ jobs:
       - name: Interact with the single node cluster
         run: |
           kubectl version
-          sleep 20
+          sleep 15
           kubectl get nodes
           ls -lh|grep -i yaml
           kubectl apply -f redis-deployment.yaml
@@ -50,6 +50,9 @@ jobs:
           kubectl apply -f spring-config.yaml
           kubectl apply -f spring-deployment.yaml
           kubectl apply -f spring-service.yaml
+          kubectl get po
+          sleep 30
+          kubectl get po
           curl -vsSL localhost:30080/hello
           curl -sSL localhost:30080/redis
           curl -sSL localhost:30080/config
