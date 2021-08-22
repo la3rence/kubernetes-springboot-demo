@@ -16,6 +16,9 @@ public class HelloController {
     @Value("${spring.redis.host}")
     private String redisHost;
 
+    @Value("${my.config}")
+    private String myConfig;
+
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -23,6 +26,12 @@ public class HelloController {
     public String hello() {
         logger.info("hello method...");
         return "Hello, Spring!";
+    }
+
+    @GetMapping("/config")
+    public String config() {
+        logger.info("get my config: {}", myConfig);
+        return myConfig;
     }
 
     @GetMapping("/redis")

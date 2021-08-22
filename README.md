@@ -38,6 +38,11 @@ kubectl get pods
 kubectl apply -f redis-service.yaml
 ```
 
+创建 Spring Boot 的 ConfigMap (application.properties)：
+```shell
+kubectl apply -f spring-config.yaml
+```
+
 创建 Spring Boot 服务的 Deployment。 若本地无镜像则自动从仓库在线拉取：
 ```shell script
 kubectl apply -f spring-deployment.yaml
