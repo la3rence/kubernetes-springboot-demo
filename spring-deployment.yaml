@@ -25,6 +25,11 @@ spec:
               value: '6379'
             - name: JAVA_OPTS
               value: '-XX:+UseG1GC'
+            - name: MY_CONFIG # configured by ConfigMap
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-properties
+                  key: MY_CONFIG
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -34,8 +39,19 @@ spec:
           resources:
             requests:
               memory: 512Mi
-              cpu: 50m
+              cpu: 200m
           lifecycle:
             preStop: # https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#cloud-deployment-kubernetes
               exec:
-                command: ["sh", "-c", "sleep 15"]
+                command: [ "sh", "-c", "sleep 10" ]
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/application.properties
+              subPath: application.properties
+      volumes:
+        - name: config-volume
+          configMap:
+            name: spring-properties
+            items:
+              - key: application.properties # key in ConfigMap
+                path: application.properties # file name for values to writing into

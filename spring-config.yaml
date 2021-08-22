@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-properties
+  namespace: default
+data:
+  MY_CONFIG: v2
+  application.properties: |
+    spring.redis.host=${REDIS_HOST:127.0.0.1}
+    spring.redis.port=${REDIS_PORT:6379}
+    server.shutdown=graceful
+    logging.level.me.lawrenceli=debug
+    my.config=${MY_CONFIG:v1}
