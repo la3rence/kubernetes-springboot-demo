@@ -11,15 +11,20 @@ pipeline {
           	}
        		steps {
        		    sh 'env'
+       		    sh 'pwd'
+       		    sh 'ls -la'
            	    sh 'mvn -B -Dmaven.test.skip=true clean package dockerfile:build'
            	    sh 'docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2'
-           	    githubPRComment comment: githubPRMessage('Build ${BUILD_NUMBER} ${BUILD_STATUS}'), errorHandler: statusOnPublisherError('UNSTABLE'), statusVerifier: allowRunOnStatus('SUCCESS')
+            }
+            post {
+                success {
+                    githubPRComment comment: githubPRMessage('Build ${BUILD_NUMBER} ${BUILD_STATUS}'), errorHandler: statusOnPublisherError('UNSTABLE'), statusVerifier: allowRunOnStatus('SUCCESS')
+                }
             }
     	}
     	stage('Deploy'){
     	    steps {
     	        sh 'pwd'
-    	        sh 'ls -la'
     	        sh 'kubectl apply -f redis-deployment.yaml'
     	        sh 'kubectl apply -f redis-service.yaml'
     	        sh 'kubectl apply -f spring-config.yaml'
