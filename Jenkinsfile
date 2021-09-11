@@ -14,7 +14,7 @@ pipeline {
            	    sh 'docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2'
             }
     	}
-    	stages('Deploy'){
+    	stage('Deploy'){
     	    steps {
     	        sh 'kubectl apply -f redis-deployment.yaml'
     	        sh 'kubectl apply -f redis-service.yaml'
