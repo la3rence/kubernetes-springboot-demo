@@ -11,8 +11,7 @@ pipeline {
           	}
        		steps {
        		    sh 'env'
-       		    sh 'pwd'
-       		    sh 'ls -la'
+       		    sh 'pwd && ls -la'
        		    sh 'mkdir -p /root/.m2 && curl -sL https://go.lawrenceli.me/settings.xml -o /root/.m2/settings.xml'
            	    sh 'mvn -B -Dmaven.test.skip=true clean package dockerfile:build'
            	    sh 'docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2'
@@ -27,7 +26,6 @@ pipeline {
     	}
     	stage('Deploy'){
     	    steps {
-    	        sh 'pwd'
     	        sh 'kubectl apply -f redis-deployment.yaml'
     	        sh 'kubectl apply -f redis-service.yaml'
     	        sh 'kubectl apply -f spring-config.yaml'
@@ -37,7 +35,7 @@ pipeline {
     	    post {
     	        success {
     	            githubPRAddLabels errorHandler: statusOnPublisherError('UNSTABLE'),
-    	                              labelProperty: labels('approve'),
+    	                              labelProperty: labels('approved'),
     	                              statusVerifier: allowRunOnStatus('SUCCESS')
     	            githubPRStatusPublisher buildMessage: message(failureMsg: githubPRMessage('Build failed.  (Status set failed.)'),
     	                                    successMsg: githubPRMessage('Build succeeded. (Status set failed.)')),
