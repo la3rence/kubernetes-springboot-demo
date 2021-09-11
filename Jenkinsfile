@@ -13,7 +13,7 @@ pipeline {
        		    sh 'env'
            	    sh 'mvn -B -Dmaven.test.skip=true clean package dockerfile:build'
            	    sh 'docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2'
-           	    githubPRComment comment: githubPRMessage('Build ${BUILD_NUMBER} ${BUILD_STATUS}')
+           	    githubPRComment comment: githubPRMessage('Build ${BUILD_NUMBER} ${BUILD_STATUS}'), errorHandler: statusOnPublisherError('UNSTABLE'), statusVerifier: allowRunOnStatus('SUCCESS')
             }
     	}
     	stage('Deploy'){
