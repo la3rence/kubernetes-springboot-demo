@@ -18,7 +18,9 @@ pipeline {
             }
             post {
                 success {
-                    githubPRComment comment: githubPRMessage('Build ${BUILD_NUMBER} ${BUILD_STATUS}'), errorHandler: statusOnPublisherError('UNSTABLE'), statusVerifier: allowRunOnStatus('SUCCESS')
+                    githubPRComment comment: githubPRMessage('Build ${BUILD_NUMBER} successfully'),
+                                    errorHandler: statusOnPublisherError('UNSTABLE'),
+                                    statusVerifier: allowRunOnStatus('SUCCESS')
                 }
             }
     	}
@@ -31,10 +33,26 @@ pipeline {
     	        sh 'kubectl apply -f spring-deployment.yaml'
     	        sh 'kubectl apply -f spring-service.yaml'
     	    }
-    	}
-    	stage('Post Status'){
-    	    steps {
-    	        githubPRAddLabels errorHandler: statusOnPublisherError('UNSTABLE'), labelProperty: labels('approve'), statusVerifier: allowRunOnStatus('SUCCESS')
+    	    post {
+    	        success {
+    	            githubPRAddLabels errorHandler: statusOnPublisherError('UNSTABLE'),
+    	                              labelProperty: labels('approve'),
+    	                              statusVerifier: allowRunOnStatus('SUCCESS')
+    	            githubPRStatusPublisher buildMessage: message(failureMsg: githubPRMessage('Build failed.  (Status set failed.)'),
+    	                                    successMsg: githubPRMessage('Build succeeded. (Status set failed.)')),
+    	                                    errorHandler: statusOnPublisherError('UNSTABLE'),
+    	                                    statusMsg: githubPRMessage('${GITHUB_PR_COND_REF} run ended'),
+    	                                    statusVerifier: allowRunOnStatus('SUCCESS'),
+    	                                    unstableAs: 'FAILURE'
+    	        }
+    	        failure {
+                    githubPRStatusPublisher buildMessage: message(failureMsg: githubPRMessage('Build failed. (Status set failed.)'),
+                                            successMsg: githubPRMessage('Build succeeded. (Status set failed.)')),
+                                            errorHandler: statusOnPublisherError('UNSTABLE'),
+                                            statusMsg: githubPRMessage('${GITHUB_PR_COND_REF} run ended'),
+                                            statusVerifier: allowRunOnStatus('FAILURE'),
+                                            unstableAs: 'FAILURE'
+    	       }
     	    }
     	}
     }
