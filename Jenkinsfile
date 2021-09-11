@@ -18,6 +18,7 @@ pipeline {
     	}
     	stage('Deploy'){
     	    steps {
+    	        sh 'pwd && ls -l'
     	        sh 'kubectl apply -f redis-deployment.yaml'
     	        sh 'kubectl apply -f redis-service.yaml'
     	        sh 'kubectl apply -f spring-config.yaml'
