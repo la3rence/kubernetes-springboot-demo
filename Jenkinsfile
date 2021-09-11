@@ -11,7 +11,7 @@ pipeline {
           	}
        		steps {
        		    sh 'env'
-           	    sh 'mvn clean package dockerfile:build'
+           	    sh 'mvn -B -Dmaven.test.skip=true clean package dockerfile:build'
            	    sh 'docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2'
             }
     	}
