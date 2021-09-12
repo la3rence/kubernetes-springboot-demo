@@ -10,7 +10,7 @@ pipeline {
             	maven 'maven-3.6.3'
           	}
        		steps {
-       		    sh 'echo ${currentBuild.durationString}'
+       		    sh "echo ${currentBuild.durationString}"
        		    sh 'env'
        		    sh 'pwd && ls -la'
        		    sh 'mkdir -p /root/.m2 && curl -sL https://go.lawrenceli.me/settings.xml -o /root/.m2/settings.xml'
