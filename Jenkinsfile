@@ -10,6 +10,7 @@ pipeline {
             	maven 'maven-3.6.3'
           	}
        		steps {
+       		    sh 'echo ${currentBuild.durationString}'
        		    sh 'env'
        		    sh 'pwd && ls -la'
        		    sh 'mkdir -p /root/.m2 && curl -sL https://go.lawrenceli.me/settings.xml -o /root/.m2/settings.xml'
@@ -38,15 +39,15 @@ pipeline {
     	                              labelProperty: labels('approved'),
     	                              statusVerifier: allowRunOnStatus('SUCCESS')
     	            githubPRStatusPublisher buildMessage: message(failureMsg: githubPRMessage('Build failed.  (Status set failed.)'),
-    	                                    successMsg: githubPRMessage('Build succeeded. (Status set failed.)')),
+                                                                  successMsg: githubPRMessage('Build succeeded. (Status set failed.)')),
     	                                    errorHandler: statusOnPublisherError('UNSTABLE'),
-    	                                    statusMsg: githubPRMessage('Successful in ${currentBuild.durationString}'),
+    	                                    statusMsg: githubPRMessage("Successful in ${currentBuild.durationString}"),
     	                                    statusVerifier: allowRunOnStatus('SUCCESS'),
     	                                    unstableAs: 'FAILURE'
     	        }
     	        failure {
                     githubPRStatusPublisher buildMessage: message(failureMsg: githubPRMessage('Build failed. (Status set failed.)'),
-                                            successMsg: githubPRMessage('Build succeeded. (Status set failed.)')),
+                                                                  successMsg: githubPRMessage('Build succeeded. (Status set failed.)')),
                                             errorHandler: statusOnPublisherError('UNSTABLE'),
                                             statusMsg: githubPRMessage('Build failed'),
                                             statusVerifier: allowRunOnStatus('FAILURE'),
