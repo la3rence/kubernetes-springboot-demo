@@ -10,9 +10,7 @@ pipeline {
             	maven 'maven-3.6.3'
           	}
        		steps {
-       		    sh "echo ${currentBuild.durationString}"
        		    sh 'env'
-       		    sh 'pwd && ls -la'
        		    sh 'mkdir -p /root/.m2 && curl -sL https://go.lawrenceli.me/settings.xml -o /root/.m2/settings.xml'
            	    sh 'mvn -B -Dmaven.test.skip=true package dockerfile:build clean'
            	    sh 'docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2'
@@ -25,6 +23,7 @@ pipeline {
     	        sh 'kubectl apply -f spring-config.yaml'
     	        sh 'kubectl apply -f spring-deployment.yaml'
     	        sh 'kubectl apply -f spring-service.yaml'
+    	        sh 'kubectl get pods'
     	    }
     	    post {
     	        success {
