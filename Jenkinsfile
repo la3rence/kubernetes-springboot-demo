@@ -14,15 +14,8 @@ pipeline {
        		    sh 'env'
        		    sh 'pwd && ls -la'
        		    sh 'mkdir -p /root/.m2 && curl -sL https://go.lawrenceli.me/settings.xml -o /root/.m2/settings.xml'
-           	    sh 'mvn -B -Dmaven.test.skip=true clean package dockerfile:build'
+           	    sh 'mvn -B -Dmaven.test.skip=true package dockerfile:build clean'
            	    sh 'docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2'
-            }
-            post {
-                success {
-                    githubPRComment comment: githubPRMessage('Build ${BUILD_NUMBER} successfully'),
-                                    errorHandler: statusOnPublisherError('UNSTABLE'),
-                                    statusVerifier: allowRunOnStatus('SUCCESS')
-                }
             }
     	}
     	stage('Deploy'){
@@ -35,6 +28,10 @@ pipeline {
     	    }
     	    post {
     	        success {
+    	            githubPRComment comment: githubPRMessage("Build '${BUILD_NUMBER}' successfully.
+    	                                                      <details><summary>Details</summary><p>[Jenkins Build]('${BUILD_URL}')</p></details>"),
+                                                    errorHandler: statusOnPublisherError('UNSTABLE'),
+                                                    statusVerifier: allowRunOnStatus('SUCCESS')
     	            githubPRAddLabels errorHandler: statusOnPublisherError('UNSTABLE'),
     	                              labelProperty: labels('approved'),
     	                              statusVerifier: allowRunOnStatus('SUCCESS')
