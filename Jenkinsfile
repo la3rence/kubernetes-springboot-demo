@@ -28,8 +28,8 @@ pipeline {
     	    }
     	    post {
     	        success {
-    	            githubPRComment comment: githubPRMessage("Build '${BUILD_NUMBER}' successfully.
-    	                                                      <details><summary>Details</summary><p>[Jenkins Build]('${BUILD_URL}')</p></details>"),
+    	            githubPRComment comment: githubPRMessage("Build '${BUILD_NUMBER}' successfully." +
+    	                                                     "<details><summary>Details</summary><p>[Jenkins Build]('${BUILD_URL}')</p></details>"),
                                                     errorHandler: statusOnPublisherError('UNSTABLE'),
                                                     statusVerifier: allowRunOnStatus('SUCCESS')
     	            githubPRAddLabels errorHandler: statusOnPublisherError('UNSTABLE'),
