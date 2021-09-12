@@ -40,7 +40,7 @@ pipeline {
     	            githubPRStatusPublisher buildMessage: message(failureMsg: githubPRMessage('Build failed.  (Status set failed.)'),
     	                                    successMsg: githubPRMessage('Build succeeded. (Status set failed.)')),
     	                                    errorHandler: statusOnPublisherError('UNSTABLE'),
-    	                                    statusMsg: githubPRMessage('${GITHUB_PR_COND_REF} run ended'),
+    	                                    statusMsg: githubPRMessage('Successful in ${currentBuild.durationString}'),
     	                                    statusVerifier: allowRunOnStatus('SUCCESS'),
     	                                    unstableAs: 'FAILURE'
     	        }
@@ -48,7 +48,7 @@ pipeline {
                     githubPRStatusPublisher buildMessage: message(failureMsg: githubPRMessage('Build failed. (Status set failed.)'),
                                             successMsg: githubPRMessage('Build succeeded. (Status set failed.)')),
                                             errorHandler: statusOnPublisherError('UNSTABLE'),
-                                            statusMsg: githubPRMessage('${GITHUB_PR_COND_REF} run ended'),
+                                            statusMsg: githubPRMessage('Build failed'),
                                             statusVerifier: allowRunOnStatus('FAILURE'),
                                             unstableAs: 'FAILURE'
     	       }
