@@ -10,4 +10,5 @@ data:
     spring.redis.port=${REDIS_PORT:6379}
     server.shutdown=graceful
     logging.level.me.lawrenceli=debug
+    springfox.documentation.auto-startup=false
     my.config=${MY_CONFIG:v1}
