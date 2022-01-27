@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <springfox.version>3.0.0</springfox.version>
+        <openapi.version>1.6.4</openapi.version>
     </properties>
 
     <dependencies>
@@ -38,13 +38,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>${springfox.version}</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${openapi.version}</version>
         </dependency>
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <resources>
             <!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
             <resource>
@@ -55,7 +56,6 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
