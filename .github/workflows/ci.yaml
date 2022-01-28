@@ -41,7 +41,7 @@ jobs:
           docker ps -a
 
       - name: Test with Maven
-        run: mvn -B clean test cobertura:cobertura
+        run: mvn -B -T 2C clean test cobertura:cobertura
 
       - name: Upload Codecov reports
         uses: codecov/codecov-action@v2

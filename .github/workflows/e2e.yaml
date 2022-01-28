@@ -30,7 +30,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build with Maven
         run: |
-          mvn -B -Dmaven.test.skip=true clean package dockerfile:build
+          mvn -B -Dmaven.test.skip=true -T 2C clean package dockerfile:build
           docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2
           docker images
       - name: Setup Minikube
