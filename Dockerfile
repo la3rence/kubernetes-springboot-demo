@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:19-jdk-alpine
 ARG JAR_FILE
 ENV APP_ROOT=/app
 WORKDIR ${APP_ROOT}
