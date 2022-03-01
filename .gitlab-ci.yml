@@ -13,11 +13,14 @@ cache:
     - target/
 
 stages:
-  - complie
+  - compile
+  - build
 
-complie:
-  stage: complie
+compile:
+  stage: compile
   image: lawrence2018/aliyun-maven:3.6.3-openjdk-8-slim
+  before_script:
+    - mvn -v
   script:
     - mvn -B clean package -Dmaven.test.skip=true
   artifacts:
@@ -27,20 +30,6 @@ complie:
 build:
   stage: build
   script:
-    - docker build --build-arg JAR_FILE=target/*.jar -t "${CI_REGISTRY}"/dockerhub2019/springboot-demo:1.0.0 .
-    - docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
+    - docker build --build-arg JAR_FILE=target/*.jar -t "${CI_REGISTRY}"/dockerhub2019/springboot-demo:"${CI_COMMIT_SHORT_SHA}" .
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" "${CI_REGISTRY}" --password-stdin
     - docker push "${CI_REGISTRY}"/dockerhub2019/springboot-demo:1.0.0
-
-deploy:
-  stage: deploy
-  image: ubuntu
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan test-host >> ~/.ssh/known_hosts
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  script:
-    - ssh -t -t root@test-host "docker run -itd --name springboot-demo --net=host '${CI_REGISTRY}'/dockerhub2019/springboot-demo:1.0.0"
