@@ -6,6 +6,9 @@ services:
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
+  CI_REGISTRY: $CI_REGISTRY
+  CI_REGISTRY_PASSWORD: $CI_REGISTRY_PASSWORD
+  CI_REGISTRY_USER: $CI_REGISTRY_USER
 
 cache:
   paths:
@@ -22,7 +25,7 @@ compile:
   before_script:
     - mvn -v
   script:
-    - mvn -B clean package -Dmaven.test.skip=true
+    - mvn -B -T 2C clean package -Dmaven.test.skip=true
   artifacts:
     paths:
       - target/*.jar
