@@ -30,6 +30,8 @@ compile:
 build:
   stage: build
   script:
+    - docker version
     - docker build --build-arg JAR_FILE=target/*.jar -t "${CI_REGISTRY}"/dockerhub2019/springboot-demo:"${CI_COMMIT_SHORT_SHA}" .
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" "${CI_REGISTRY}" --password-stdin
-    - docker push "${CI_REGISTRY}"/dockerhub2019/springboot-demo:1.0.0
+    - docker push "${CI_REGISTRY}"/dockerhub2019/springboot-demo:"${CI_COMMIT_SHORT_SHA}"
+    - docker logout
