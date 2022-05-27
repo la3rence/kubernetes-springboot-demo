@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <openapi.version>1.6.8</openapi.version>
+        <openapi.version>1.6.9</openapi.version>
     </properties>
 
     <dependencies>
