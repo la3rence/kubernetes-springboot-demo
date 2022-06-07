@@ -1,6 +1,6 @@
-image: docker:20.10.16
+image: docker:20.10.17
 services:
-  - name: docker:20.10.16-dind
+  - name: docker:20.10.17-dind
     entrypoint: [ "env", "-u", "DOCKER_HOST" ]
     command: [ "dockerd-entrypoint.sh" ]
 variables:
