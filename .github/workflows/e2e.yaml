@@ -34,7 +34,7 @@ jobs:
           docker tag kubernetes-springboot-demo:0.0.2 registry.cn-shanghai.aliyuncs.com/dockerhub2019/spring:0.0.2
           docker images
       - name: Setup Minikube
-        uses: manusa/actions-setup-minikube@v2.7.0
+        uses: manusa/actions-setup-minikube@v2.7.1
         with:
           minikube version: 'v1.16.0'
           kubernetes version: 'v1.19.3'
